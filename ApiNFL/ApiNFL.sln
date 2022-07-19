@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiNFL", "ApiNFL.csproj", "{1B0C1B5B-F352-4AD2-9527-E6C01C3D6373}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApiNFL", "..\TestApiNFL\TestApiNFL.csproj", "{87BCFA9A-65CD-455A-98AD-7D578AE4F074}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApiNFL", "..\TestApiNFL\TestApiNFL.csproj", "{87BCFA9A-65CD-455A-98AD-7D578AE4F074}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

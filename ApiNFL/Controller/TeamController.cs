@@ -1,4 +1,5 @@
 ﻿using ApiNFL.Enumeration;
+using ApiNFL.Repository;
 using ApiNFL.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,14 @@ namespace ApiNFL.Controller
     [ApiController]
     public class TeamController : ControllerBase
     {
+
+        private readonly NFLDbContext _DbContext;
+
+        public TeamController(NFLDbContext dbContext)
+        {
+            _DbContext = dbContext;
+        }
+
         // GET: api/<ValuesController>
         [HttpGet]
         public IEnumerable<TeamViewModel> Get()
@@ -59,7 +68,9 @@ namespace ApiNFL.Controller
         // public Team Get([FromRoute] int id)
         public TeamViewModel GetByName([FromRoute] string name)
         {
-            return new TeamViewModel { Id = 1, Name = name, City = "Seattle" };
+            // return new TeamViewModel { Id = 1, Name = name, City = "Seattle" };
+            var team = _DbContext.Teams.Find(1);
+            return new TeamViewModel { Name = team.Name };
         }
 
         [HttpGet("byYear")]
@@ -76,6 +87,8 @@ namespace ApiNFL.Controller
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<TeamViewModel> Post([FromBody] TeamViewModel team)
         {
+            _DbContext.Teams.Add(new Model.Team { Name = team.Name});
+            _DbContext.SaveChanges();
             team.Id = 1;
             return Created(nameof(Post), team);
         }

@@ -1,6 +1,8 @@
+using ApiNFL.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -18,6 +20,7 @@ namespace ApiNFL
         {
             services.AddControllers();
             services.AddSwaggerGen();
+            services.AddDbContext<NFLDbContext>(opt => opt.UseInMemoryDatabase("dbnfl"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
