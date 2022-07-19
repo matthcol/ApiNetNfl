@@ -8,6 +8,10 @@ namespace ApiNFL.ViewModel
     public class Team
     {
         public int? Id { get; set; }
+        
+        [Required]
+        // [StringLength(200, MinimumLength=3)]
+        [MinLength(3)]
         public string Name { get; set; }
 
         public string City { get; set; }
@@ -18,8 +22,10 @@ namespace ApiNFL.ViewModel
 
         [JsonConverter(typeof(DateConverter))]
         [DataType(DataType.Date)] // DateTime, Time, ...
-        public DateTime CreationDate { get; set; } 
+        public DateTime CreationDate { get; set; }
 
         // conference, nbJoueurs, ville
+        [JsonIgnore]
+        public string Sponsor { get; set; }
     }
 }

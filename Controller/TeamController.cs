@@ -1,11 +1,15 @@
 ﻿using ApiNFL.ViewModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Net.Mime;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ApiNFL.Controller
 {
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]
     [ApiController]
     public class TeamController : ControllerBase
@@ -15,8 +19,18 @@ namespace ApiNFL.Controller
         public IEnumerable<Team> Get()
         {
             return new Team[] { 
-                new Team { Id=1, Name="Seahawks", City="Seattle", Conference = ConferenceEnum.East, CreationDate = System.DateTime.Today},
-                new Team { Id=2, Name="Patriots", City="New England", Conference = ConferenceEnum.West, CreationDate = new System.DateTime(1950, 6, 12)},
+                new Team { 
+                    Id=1, 
+                    Name="Seahawks", 
+                    City="Seattle", 
+                    Conference = ConferenceEnum.East, 
+                    CreationDate = System.DateTime.Today,
+                    Sponsor = "Koca Kola"
+                },
+                new Team { Id=2, Name="Patriots", City="New England", Conference = ConferenceEnum.West, 
+                    CreationDate = new System.DateTime(1950, 6, 12),
+                    Sponsor = "Pepsy Kola"
+                },
             };
         }
 
@@ -46,14 +60,29 @@ namespace ApiNFL.Controller
 
         // POST api/<ValuesController>
         [HttpPost]
-        public void Post([FromBody] Team team)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public ActionResult<Team> Post([FromBody] Team team)
         {
+            team.Id = 1;
+            return Created(nameof(Post), team);
         }
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Team team)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult Put(int id, [FromBody] Team team)
         {
+            // simulate id not exists
+            if (id < 1)
+            {
+                return NotFound($"Team not found with id {id}");
+            } else if (id != team.Id)
+            {
+                return BadRequest($"ids don't match: {id}, {team.Id}");
+            }
+            return NoContent();
         }
 
         // DELETE api/<ValuesController>/5
