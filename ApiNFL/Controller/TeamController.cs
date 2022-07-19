@@ -1,4 +1,5 @@
-﻿using ApiNFL.ViewModel;
+﻿using ApiNFL.Enumeration;
+using ApiNFL.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -16,10 +17,10 @@ namespace ApiNFL.Controller
     {
         // GET: api/<ValuesController>
         [HttpGet]
-        public IEnumerable<Team> Get()
+        public IEnumerable<TeamViewModel> Get()
         {
-            return new Team[] { 
-                new Team { 
+            return new TeamViewModel[] { 
+                new TeamViewModel { 
                     Id=1, 
                     Name="Seahawks", 
                     City="Seattle", 
@@ -27,7 +28,7 @@ namespace ApiNFL.Controller
                     CreationDate = System.DateTime.Today,
                     Sponsor = "Koca Kola"
                 },
-                new Team { Id=2, Name="Patriots", City="New England", Conference = ConferenceEnum.West, 
+                new TeamViewModel { Id=2, Name="Patriots", City="New England", Conference = ConferenceEnum.West, 
                     CreationDate = new System.DateTime(1950, 6, 12),
                     Sponsor = "Pepsy Kola"
                 },
@@ -37,31 +38,43 @@ namespace ApiNFL.Controller
         // GET api/<ValuesController>/5
         [HttpGet("{id:int}")]
         // public Team Get([FromRoute] int id)
-        public Team Get([FromRoute] int id)
+        public TeamDetailViewModel Get([FromRoute] int id)
         {
-            return new Team { Id = id, Name = "Seahawks", City = "Seattle" };
+            return new TeamDetailViewModel { 
+                Id = id, Name = "Seahawks", City = "Seattle", 
+                Players = new List<PlayerViewModel> { 
+                    new PlayerViewModel
+                    {
+                        Id = 1,
+                        Name = "Tom Brady"
+                    },
+                    new PlayerViewModel {
+                        Id = 1,
+                        Name = "Russel Wilson"
+                    }
+                } };
         }
 
         [HttpGet("{name}")]
         // public Team Get([FromRoute] int id)
-        public Team GetByName([FromRoute] string name)
+        public TeamViewModel GetByName([FromRoute] string name)
         {
-            return new Team { Id = 1, Name = name, City = "Seattle" };
+            return new TeamViewModel { Id = 1, Name = name, City = "Seattle" };
         }
 
         [HttpGet("byYear")]
-        public IEnumerable<Team> GetByYear([FromQuery(Name="y")] int? year)
+        public IEnumerable<TeamViewModel> GetByYear([FromQuery(Name="y")] int? year)
         {
-            return new Team[] {
-                new Team { Id=year, Name="Seahawks", City="Seattle"},
-                new Team { Id=year, Name="Patriots", City="New England"},
+            return new TeamViewModel[] {
+                new TeamViewModel { Id=year, Name="Seahawks", City="Seattle"},
+                new TeamViewModel { Id=year, Name="Patriots", City="New England"},
             };
         }
 
         // POST api/<ValuesController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<Team> Post([FromBody] Team team)
+        public ActionResult<TeamViewModel> Post([FromBody] TeamViewModel team)
         {
             team.Id = 1;
             return Created(nameof(Post), team);
@@ -72,7 +85,7 @@ namespace ApiNFL.Controller
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult Put(int id, [FromBody] Team team)
+        public ActionResult Put(int id, [FromBody] TeamViewModel team)
         {
             // simulate id not exists
             if (id < 1)

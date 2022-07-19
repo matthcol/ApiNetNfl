@@ -1,4 +1,4 @@
-﻿namespace ApiNFL.ViewModel
+﻿namespace ApiNFL.Enumeration
 {
     public enum ConferenceEnum
     {

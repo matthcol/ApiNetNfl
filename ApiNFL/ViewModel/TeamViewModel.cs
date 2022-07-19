@@ -1,11 +1,12 @@
-﻿using ApiNFL.Shared;
+﻿using ApiNFL.Enumeration;
+using ApiNFL.Shared;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace ApiNFL.ViewModel
 {
-    public class Team
+    public class TeamViewModel
     {
         public int? Id { get; set; }
         

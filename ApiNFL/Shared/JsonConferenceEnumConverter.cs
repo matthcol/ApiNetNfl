@@ -1,4 +1,5 @@
-﻿using ApiNFL.ViewModel;
+﻿
+using ApiNFL.Enumeration;
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
