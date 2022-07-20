@@ -1,11 +1,13 @@
 ﻿using ApiNFL.Enumeration;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApiNFL.Model
 {
     public class Team
     {
-        public int? Id { get; set; }
+        [Key]
+        public int? Identification { get; set; }
 
         public string Name { get; set; }
 

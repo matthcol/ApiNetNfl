@@ -1,4 +1,6 @@
-﻿using ApiNFL.Repository;
+﻿using ApiNFL.Enumeration;
+using ApiNFL.Model;
+using ApiNFL.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,20 @@ namespace TestApiNFL.LearnEntityFramework
         {
             ContextOptions = contextOptions;
 
-            // init some data
+            InitData();
+        }
+
+        private void InitData()
+        {
+            using (var dbContext = new NFLDbContext(ContextOptions))
+            {
+                IEnumerable<Team> teams = new List<Team>() {
+                     new Team { Name = "Patriots", City = "New England", Conference = ConferenceEnum.West },
+                     new Team { Name = "49ers", City = "San Francisco", Conference = ConferenceEnum.East }
+                     };
+                dbContext.AddRange(teams);
+                dbContext.SaveChanges();
+            }
         }
 
         
