@@ -54,8 +54,10 @@ namespace TestApiNFL.LearnEntityFramework
                 dbContext.SaveChanges();
 
                 // Matches
-                var match = new Match { TeamHome = team1, TeamAway = team2, Day = 2, ScoreHome = 43, ScoreAway = 27 };
-                dbContext.Matches.Add(match);
+                var match1 = new Match { TeamHome = team1, TeamAway = team2, Day = 2, ScoreHome = 43, ScoreAway = 27 };
+                var match2 = new Match { TeamHome = team1, TeamAway = team3, Day = 3, ScoreHome = 12, ScoreAway = 25 };
+                var match3 = new Match { TeamHome = team4, TeamAway = team1, Day = 1, ScoreHome = 15, ScoreAway = 7 };
+                dbContext.Matches.AddRange(match1, match2, match3);
                 dbContext.SaveChanges();
 
 

@@ -170,11 +170,13 @@ namespace TestApiNFL.LearnEntityFramework
                         (c, tc) => new
                         {
                             Conference = c,
-                            TrophySum = tc.Sum()
+                            TrophySum = tc.Sum(),
+                            TrophyMax = tc.Max()
                         })
                     .ToList();
-
             }
         }
+
+        // score total à la maison de chaque equipe
     }
 }
