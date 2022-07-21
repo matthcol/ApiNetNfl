@@ -1,6 +1,7 @@
 ﻿using ApiNFL.Enumeration;
 using ApiNFL.Model;
 using ApiNFL.Repository;
+using ApiNFL.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -133,7 +134,8 @@ namespace TestApiNFL.LearnEntityFramework
         }
 
         [Fact]
-        public void TestPseudoSQL() {
+        public void TestPseudoSQL()
+        {
             using (var dbContext = new NFLDbContext(ContextOptions))
             {
                 var query = from p in dbContext.Players
@@ -152,7 +154,7 @@ namespace TestApiNFL.LearnEntityFramework
                 var query = "select * from Players p " +
                             "where p.Position == 0 ";
                 var players = dbContext.Players
-                    .FromSqlRaw(query)            
+                    .FromSqlRaw(query)
                     .ToList();
                 Assert.Equal(4, players.Count);
             }
@@ -177,6 +179,67 @@ namespace TestApiNFL.LearnEntityFramework
             }
         }
 
+        [Fact]
+        public void TestHomeScoreByTeamId()
+        {
+            using (var dbContext = new NFLDbContext(ContextOptions))
+            {
+                var res = dbContext.Matches
+                    .GroupBy(
+                        m =>  m.TeamHomeId,
+                        m => m.ScoreHome,
+                        (t, sh) => new
+                        {
+                            TeamHomeId = t,
+                            ScoreHome = sh.Sum()
+                        }
+                    )
+                    .ToList();
+            }
+        }
+
+        [Fact]
+        public void TestHomeScoreByTeamName()
+        {
+            using (var dbContext = new NFLDbContext(ContextOptions))
+            {
+                var res = dbContext.Matches
+                    .GroupBy(
+                        m => m.TeamHome.Name,
+                        m => m.ScoreHome,
+                        (t, sh) => new
+                        {
+                            TeamHomeName = t,
+                            ScoreHome = sh.Sum()
+                        }
+                    )
+                    .ToList();
+            }
+        }
+
         // score total à la maison de chaque equipe
+        [Fact]
+        public void TestHomeScoreByTeamIdName()
+        {
+            using (var dbContext = new NFLDbContext(ContextOptions))
+            {
+                var res = dbContext.Matches
+                    .GroupBy(
+                        m => new
+                        {
+                            Id = m.TeamHomeId,
+                            Name = m.TeamHome.Name
+                        },
+                        m => m.ScoreHome,
+                        (t, sh) => new TeamStatisticsViewModel
+                        {
+                            Id = t.Id,
+                            Name = t.Name,
+                            ScoreHomeSum = sh.Sum()
+                        }
+                    )
+                    .ToList();
+            }
+        }
     }
 }

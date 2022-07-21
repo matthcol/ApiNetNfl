@@ -1,6 +1,6 @@
 ﻿using ApiNFL.Enumeration;
 
-namespace ApiNFL.Model
+namespace ApiNFL.Model.Orm
 {
     public class Player
     {

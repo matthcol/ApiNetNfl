@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ApiNFL.Model
+namespace ApiNFL.Model.Orm
 {
     public class Match
     {
         // public int Id { get; set; } 
-        
+
         public Team TeamHome { get; set; }
 
         public int TeamHomeId { get; set; }

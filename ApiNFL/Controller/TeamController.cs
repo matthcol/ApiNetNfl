@@ -1,6 +1,7 @@
 ﻿using ApiNFL.Enumeration;
 using ApiNFL.Repository;
 using ApiNFL.ViewModel;
+using ApiNFL.Model.Orm;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -87,7 +88,7 @@ namespace ApiNFL.Controller
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<TeamViewModel> Post([FromBody] TeamViewModel team)
         {
-            _DbContext.Teams.Add(new Model.Team { Name = team.Name});
+            _DbContext.Teams.Add(new Team { Name = team.Name});
             _DbContext.SaveChanges();
             team.Id = 1;
             return Created(nameof(Post), team);

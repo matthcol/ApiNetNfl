@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ApiNFL.Model
+namespace ApiNFL.Model.Orm
 {
     public class Team
     {
@@ -22,8 +23,17 @@ namespace ApiNFL.Model
 
         public List<Player> Players { get; set; }
 
-        public Team() { 
+       // [InverseProperty("TeamHome")]
+        public List<Match> MatchesHome { get; set; }
+
+        // [InverseProperty("TeamAway")]
+        public List<Match> MatchesAway { get; set; }
+
+        public Team()
+        {
             Players = new List<Player>();
+            MatchesHome = new List<Match>();
+            MatchesAway = new List<Match>();
         }
     }
 }

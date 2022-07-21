@@ -1,5 +1,5 @@
 using ApiNFL.Enumeration;
-using ApiNFL.Model;
+using ApiNFL.Model.Orm;
 using ApiNFL.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
