@@ -28,7 +28,7 @@ namespace TestApiNFL.LearnEntityFramework
                 var team = new Team { Name = name, City = "Seattle", CreationDate = new DateTime(1910, 2, 12) };
                 dbContext.Teams.Add(team);
                 dbContext.SaveChanges(); // synchro EF => DB : INSERT INTO Team ....
-                Assert.NotNull(team.Identification);
+                Assert.NotNull(team.Id);
                 // read data from EF
                 var teamsRead = dbContext.Teams.Where(t => t.Name == name).ToList();
                 Assert.Equal(1, teamsRead.Count);
@@ -47,21 +47,30 @@ namespace TestApiNFL.LearnEntityFramework
                 // verify
                 var teamVerify = dbContext.Teams
                     .Where(t => t.Conference == ConferenceEnum.East)
-                    .Where(t => t.Identification == team.Identification)
-                    .Single();
+                    .Where(t => t.Id == team.Id)
+                    .Single(); // assert only one result
             }
         }
 
         [Fact]
         public void TestDelete()
         {
-
+            using (var dbContext = new NFLDbContext(ContextOptions))
+            {
+                var team = new Team { Name = "Carolina Panthers" };
+                dbContext.Teams.Add(team);
+                dbContext.SaveChanges();
+                dbContext.Teams.Remove(team);
+                dbContext.SaveChanges();
+                var teamVerify = dbContext.Teams.Find(team.Id);
+                Assert.Null(teamVerify);
+            }
         }
 
-        [Fact]
+            [Fact]
         public void TestReadById()
         {
-
+       
         }
 
     }
