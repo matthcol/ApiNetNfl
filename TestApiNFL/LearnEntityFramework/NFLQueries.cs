@@ -241,5 +241,21 @@ namespace TestApiNFL.LearnEntityFramework
                     .ToList();
             }
         }
+
+        [Fact]
+        public void TestTeamToMatches()
+        {
+            using (var dbContext = new NFLDbContext(ContextOptions)) {
+                var team = dbContext.Teams
+                    .Where(t => t.Name == "Patriots")
+                    .Include(t => t.MatchesHome)
+                    .Include(t => t.MatchesAway)
+                    .Single();
+
+                Assert.True(team.MatchesHome.Count() > 0);
+                Assert.True(team.MatchesAway.Count() > 0);
+            };
+
+        }
     }
 }
