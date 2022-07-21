@@ -88,7 +88,7 @@ namespace ApiNFL.Controller
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<TeamViewModel> Post([FromBody] TeamViewModel team)
         {
-            _DbContext.Teams.Add(new Team { Name = team.Name});
+            _DbContext.Teams.Add(new Team { Name = team.Name, City=team.Name, CreationDate = team.CreationDate });
             _DbContext.SaveChanges();
             team.Id = 1;
             return Created(nameof(Post), team);

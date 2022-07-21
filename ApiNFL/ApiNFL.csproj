@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20220721130347_AddEntityStadium.cs" />
+    <Compile Remove="Migrations\20220721130347_AddEntityStadium.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.27" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.27" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.27" />

@@ -32,5 +32,6 @@ namespace ApiNFL.Repository
 
         public DbSet<Match> Matches { get; set; }
 
+        // public DbSet<Stadium> Stadiums { get; set; }    
     }
 }

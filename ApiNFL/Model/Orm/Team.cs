@@ -11,12 +11,14 @@ namespace ApiNFL.Model.Orm
         // [Key] mandatory if property name not Id or TeamId, ex: Identification
         public int? Id { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         public string City { get; set; }
 
         public ConferenceEnum Conference { get; set; }
 
+        [Column(TypeName ="Date")]
         public DateTime CreationDate { get; set; }
 
         public int TrophyCount { get; set; }
