@@ -1,11 +1,10 @@
 ﻿using ApiNFL.Enumeration;
-using ApiNFL.Repository;
 using ApiNFL.ViewModel;
-using ApiNFL.Model.Orm;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net.Mime;
+using ApiNFL.Service;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,12 +16,12 @@ namespace ApiNFL.Controller
     [ApiController]
     public class TeamController : ControllerBase
     {
+        
+        private readonly ITeamService _teamService;
 
-        private readonly NFLDbContext _DbContext;
-
-        public TeamController(NFLDbContext dbContext)
+        public TeamController(ITeamService teamService)
         {
-            _DbContext = dbContext;
+            _teamService = teamService; 
         }
 
         // GET: api/<ValuesController>
@@ -48,21 +47,28 @@ namespace ApiNFL.Controller
         // GET api/<ValuesController>/5
         [HttpGet("{id:int}")]
         // public Team Get([FromRoute] int id)
-        public TeamDetailViewModel Get([FromRoute] int id)
+        public ActionResult<TeamDetailViewModel> Get([FromRoute] int id)
         {
-            return new TeamDetailViewModel { 
-                Id = id, Name = "Seahawks", City = "Seattle", 
-                Players = new List<PlayerViewModel> { 
-                    new PlayerViewModel
-                    {
-                        Id = 1,
-                        Name = "Tom Brady"
-                    },
-                    new PlayerViewModel {
-                        Id = 1,
-                        Name = "Russel Wilson"
-                    }
-                } };
+            //return new TeamDetailViewModel { 
+            //    Id = id, Name = "Seahawks", City = "Seattle", 
+            //    Players = new List<PlayerViewModel> { 
+            //        new PlayerViewModel
+            //        {
+            //            Id = 1,
+            //            Name = "Tom Brady"
+            //        },
+            //        new PlayerViewModel {
+            //            Id = 1,
+            //            Name = "Russel Wilson"
+            //        }
+            //    } };
+            var teamViewModel =  _teamService.GetById(id);
+            //if (teamViewModel == null)
+            //{
+            //    //return Ok("No Team with this Id");
+            //    return NotFound($"No Team with id: {id}");
+            //}
+            return teamViewModel;
         }
 
         [HttpGet("{name}")]
@@ -70,8 +76,9 @@ namespace ApiNFL.Controller
         public TeamViewModel GetByName([FromRoute] string name)
         {
             // return new TeamViewModel { Id = 1, Name = name, City = "Seattle" };
-            var team = _DbContext.Teams.Find(1);
-            return new TeamViewModel { Name = team.Name };
+            //var team = _DbContext.Teams.Find(1);
+            //return new TeamViewModel { Name = team.Name, CreationDate = team.CreationDate };
+            return null;
         }
 
         [HttpGet("byYear")]
@@ -88,10 +95,10 @@ namespace ApiNFL.Controller
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<TeamViewModel> Post([FromBody] TeamViewModel team)
         {
-            _DbContext.Teams.Add(new Team { Name = team.Name, City=team.Name, CreationDate = team.CreationDate });
-            _DbContext.SaveChanges();
-            team.Id = 1;
-            return Created(nameof(Post), team);
+            //_DbContext.Teams.Add(new Team { Name = team.Name, City=team.Name, CreationDate = team.CreationDate });
+            //_DbContext.SaveChanges();
+            var teamSaved = _teamService.Save(team);
+            return Created(nameof(Post), teamSaved);
         }
 
         // PUT api/<ValuesController>/5

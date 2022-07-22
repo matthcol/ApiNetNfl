@@ -15,7 +15,8 @@ namespace TestApiNFL.LearnEntityFramework
     {
         public NFLQueries() : base(
           new DbContextOptionsBuilder<NFLDbContext>()
-          .UseInMemoryDatabase("dbnfltest2")
+          // .UseInMemoryDatabase("dbnfltest2")
+          .UseMySql("server=localhost;user id=nfl;password='password';database=dbnfltest1")
           .Options
         )
         {

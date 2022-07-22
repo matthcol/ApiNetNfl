@@ -18,7 +18,7 @@ namespace ApiNFL.Model.Orm
 
         public ConferenceEnum Conference { get; set; }
 
-        [Column(TypeName ="Date")]
+        // [Column(TypeName ="Date")]
         public DateTime CreationDate { get; set; }
 
         public int TrophyCount { get; set; }

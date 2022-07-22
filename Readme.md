@@ -23,3 +23,17 @@ Script-DbContext -Output Nfl-ddl.sql
 Script-DbContext -Context NFLDbContext -Output Nfl-ddl.sql
 
 Script-DbContext -Context ApiNFL.Repository.NFLDbContext  -Output Nfl-ddl.sql 
+
+## Migrations
+
+### Create/apply Migration
+Add-Migration InitialCreate
+
+Update-Database (apply last migration)
+
+Update-Database NameMigration (go forward or backward to migration NameMigration)
+
+### Create Script for one or several migrations
+Script-Migration -From Mig1 -To Mig2 -Output script.sql (0 is a special migration before initial creation)
+
+
