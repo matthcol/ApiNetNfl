@@ -17,19 +17,19 @@ namespace ApiNFL.Repository.Impl
             _dbContext = dbContext;
         }
 
-        public Team Get(int id)
+        public async Task<Team> Get(int id)
         {
-            return _dbContext.Teams
+            return await _dbContext.Teams
                 .Where(t => t.Id == id)
                 .Include(t => t.Players)
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
         }
 
-        public Team Save(Team team)
+        public async Task<Team> Save(Team team)
         {
-            _dbContext.Teams
-                .Add(team);
-            _dbContext.SaveChanges();
+            await _dbContext.Teams
+                .AddAsync(team);
+            await _dbContext.SaveChangesAsync();
             return team;
         }
     }

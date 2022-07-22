@@ -9,8 +9,8 @@ namespace ApiNFL.Service
 {
     public interface ITeamService
     {
-        TeamDetailViewModel GetById(int id);
-        TeamViewModel Save(TeamViewModel team);
+        Task<TeamDetailViewModel> GetById(int id);
+        Task<TeamViewModel> Save(TeamViewModel team);
 
     }
 }

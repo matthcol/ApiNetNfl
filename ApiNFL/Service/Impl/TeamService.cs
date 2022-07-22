@@ -23,10 +23,11 @@ namespace ApiNFL.Service.Impl
             _nflMapper = nflMapper;
         }
 
-        public TeamDetailViewModel GetById(int id)
+        public async Task<TeamDetailViewModel> GetById(int id)
         {
+            var team = await _teamRepository.Get(id);
             var teamDetailViewModel =  _nflMapper.convertToTeamDetailViewModel(
-                _teamRepository.Get(id));
+                team);
             //if (teamDetailViewModel == null)
             //{
             //    throw new ValidationException();
@@ -34,10 +35,10 @@ namespace ApiNFL.Service.Impl
             return teamDetailViewModel;
         }
 
-        public TeamViewModel Save(TeamViewModel teamViewModel)
+        public async Task<TeamViewModel> Save(TeamViewModel teamViewModel)
         {
             var team = _nflMapper.convertToTeam(teamViewModel);
-            var teamSaved = _teamRepository.Save(team);
+            var teamSaved = await _teamRepository.Save(team);
             return _nflMapper.convertToTeamViewModel(teamSaved);
         }
     }

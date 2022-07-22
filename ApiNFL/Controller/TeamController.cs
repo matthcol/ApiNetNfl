@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net.Mime;
 using ApiNFL.Service;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,7 +27,7 @@ namespace ApiNFL.Controller
 
         // GET: api/<ValuesController>
         [HttpGet]
-        public IEnumerable<TeamViewModel> Get()
+        public async Task<ActionResult<IEnumerable<TeamViewModel>>> GetAll()
         {
             return new TeamViewModel[] { 
                 new TeamViewModel { 
@@ -47,7 +48,7 @@ namespace ApiNFL.Controller
         // GET api/<ValuesController>/5
         [HttpGet("{id:int}")]
         // public Team Get([FromRoute] int id)
-        public ActionResult<TeamDetailViewModel> Get([FromRoute] int id)
+        public async Task<ActionResult<TeamDetailViewModel>> GetById([FromRoute] int id)
         {
             //return new TeamDetailViewModel { 
             //    Id = id, Name = "Seahawks", City = "Seattle", 
@@ -62,7 +63,7 @@ namespace ApiNFL.Controller
             //            Name = "Russel Wilson"
             //        }
             //    } };
-            var teamViewModel =  _teamService.GetById(id);
+            var teamViewModel =  await _teamService.GetById(id);
             //if (teamViewModel == null)
             //{
             //    //return Ok("No Team with this Id");
@@ -73,7 +74,7 @@ namespace ApiNFL.Controller
 
         [HttpGet("{name}")]
         // public Team Get([FromRoute] int id)
-        public TeamViewModel GetByName([FromRoute] string name)
+        public async Task<ActionResult<TeamViewModel>> GetByName([FromRoute] string name)
         {
             // return new TeamViewModel { Id = 1, Name = name, City = "Seattle" };
             //var team = _DbContext.Teams.Find(1);
@@ -82,7 +83,7 @@ namespace ApiNFL.Controller
         }
 
         [HttpGet("byYear")]
-        public IEnumerable<TeamViewModel> GetByYear([FromQuery(Name="y")] int? year)
+        public async Task<ActionResult<IEnumerable<TeamViewModel>>> GetByYear([FromQuery(Name="y")] int? year)
         {
             return new TeamViewModel[] {
                 new TeamViewModel { Id=year, Name="Seahawks", City="Seattle"},
@@ -93,12 +94,14 @@ namespace ApiNFL.Controller
         // POST api/<ValuesController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<TeamViewModel> Post([FromBody] TeamViewModel team)
+        public async Task<ActionResult<TeamViewModel>> Post([FromBody] TeamViewModel team)
         {
             //_DbContext.Teams.Add(new Team { Name = team.Name, City=team.Name, CreationDate = team.CreationDate });
             //_DbContext.SaveChanges();
-            var teamSaved = _teamService.Save(team);
-            return Created(nameof(Post), teamSaved);
+            var teamSaved = await _teamService.Save(team);
+            // TODO: protect from overposting attacks
+            // return Created(nameof(Post), teamSaved);
+            return CreatedAtAction(nameof(GetById), new { id = teamSaved.Id }, teamSaved);
         }
 
         // PUT api/<ValuesController>/5
@@ -106,7 +109,7 @@ namespace ApiNFL.Controller
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult Put(int id, [FromBody] TeamViewModel team)
+        public async Task<ActionResult> Put(int id, [FromBody] TeamViewModel team)
         {
             // simulate id not exists
             if (id < 1)
@@ -121,8 +124,9 @@ namespace ApiNFL.Controller
 
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
+            return NoContent();
         }
 
     }

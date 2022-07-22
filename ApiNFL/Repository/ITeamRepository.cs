@@ -9,9 +9,9 @@ namespace ApiNFL.Repository
 {
     public interface ITeamRepository
     {
-        Team Save(Team team);
+        Task<Team> Save(Team team);
 
-        Team Get(int id);
+        Task<Team> Get(int id);
         
     }
 }
